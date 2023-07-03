@@ -1209,7 +1209,120 @@ play_game()
 
 
 
+import numpy as np
+def f(x,y): 
+    return (1-x)**2 + 100*(y-x**2)**2
 
+def hill_climbing(): 
+    current = (np.random.uniform(-2,2),np.random.uniform(-2,2)) 
+    print("Initial point:", current) 
+    stp = 0.01
+    flg = True
+    number_of_iterations = 1000
+    current_iteraton = 0
+    while flg: 
+        curr = f(current[0],current[1]) 
+        
+        if current_iteraton == number_of_iterations:
+            flg = False
+            return current
+        
+        if f(current[0]+stp,current[1]) > curr: 
+            current = (current[0]+stp,current[1]) 
+        elif f(current[0],current[1]+stp) > curr: 
+            current = (current[0],current[1]+stp) 
+        elif f(current[0],current[1]-stp) > curr: 
+            current = (current[0],current[1]-stp) 
+        elif f(current[0]-stp,current[1]) > curr: 
+            current = (current[0]-stp,current[1]) 
+        elif f(current[0]+stp,current[1]+stp) > curr: 
+            current = (current[0]+stp,current[1]+stp) 
+        elif f(current[0]-stp,current[1]+stp) > curr: 
+            current = (current[0]-stp,current[1]+stp) 
+        elif f(current[0]+stp,current[1]-stp) > curr: 
+            current = (current[0]+stp,current[1]-stp) 
+        elif f(current[0]-stp,current[1]-stp) > curr: 
+            current = (current[0]-stp,current[1]-stp) 
+        else: 
+            flg = False
+            return current
+        
+        current_iteraton += 1   
+        print(current_iteraton)
+
+print("Optimal point:", hill_climbing())
+
+
+
+
+
+
+
+
+
+
+import random
+
+
+def foo(x,y,z):
+    return 6*x**3 +9*y**2 + 90*z - 25
+
+
+def fitness(x,y,z):
+    ans = foo(x,y,z)
+
+    if ans ==0:
+        return 99999
+    
+    else:
+        return abs(1/ans)
+    
+
+solutions = []  # ( x , y , z )
+
+for s in range(1000):
+    solutions.append( (random.uniform(0,1000) , 
+                       random.uniform(0,1000) , 
+                       random.uniform(0,1000) ) )      
+    
+
+for i in range(1000):
+    rankedsolutions = []
+
+    for s in solutions:
+        rankedsolutions.append( ( fitness(s[0], s[1], s[2]), s ) )    #( fitness value , (x , y, z) )
+
+
+    rankedsolutions.sort()
+    rankedsolutions.reverse()
+    bestsolutions = rankedsolutions[:100]    #( fitness value , (x , y, z) )
+
+    print(f"=== Gen {i} best solutions ====")
+    print(rankedsolutions[0])
+
+    if rankedsolutions[0][0] > 999 and rankedsolutions[0][0] < 1500 :
+        break
+
+
+    elements = []   # x ,y , z
+
+
+    for s in bestsolutions:
+        elements.append(s[1][0])
+        elements.append(s[1][1]) 
+        elements.append(s[1][2]) 
+
+    
+
+    newGen = []
+    for _ in range(1000):
+        e1 = random.choice(elements) * random.uniform(0.99 , 1.01)
+        e2 = random.choice(elements) * random.uniform(0.99 , 1.01)
+        e3 = random.choice(elements) * random.uniform(0.99 , 1.01)
+
+        newGen.append( (e1,e2,e3) )   # ( x , y , z )
+    
+    solutions = newGen
 
 
     
